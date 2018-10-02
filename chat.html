@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Chat application</title>
+    <link rel="stylesheet" href="bootstrap-3.3.5-dist/css/bootstrap.css">
+    <style>
+    #chatlog{
+        height: 200px;
+        overflow-y: scroll;/*caht scroll*/
+    }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div id="chatlog"></div>
+    </div>
+    <form id="form">
+    <div class="row">
+        <div class="col-md-8">
+            <input type="text" id="message" class="form-control">
+        </div>
+        <div class="col-md-4">
+            <button type="button" id="submit" class="btn btn-success">Chat</button>
+        </div>
+    </div>
+    </form>
+</div>
+    
+<script src="jquery-2.1.4.min.js"></script>
+<script>
+var lastMessage;
+function onGetData(message){
+    if(message == lastMessage){
+        return;
+    }
+    lastMessage = message;
+    $("<div>").text(message).prependTo("#chatlog");
+    /*$("#chatlog").text(message);*/
+}
+function refresh(){
+    $.get("http://exceed.cupco.de/iot/9/76",onGetData);
+}
+function sendChat(){
+    var text = $("#message").val();
+    $.post("http://exceed.cupco.de/iot/9/76",{data: text});
+    $("#message").val("");/*clear chat*/
+}
+function submitForm(){
+    sendChat();
+    return false; //important
+}
+    
+    setInterval(refresh,1000);
+    $("#submit").click(sendChat);
+    $("#form").submit(submitForm);
+
+</script>
+</body>
+</html>

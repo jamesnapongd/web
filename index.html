@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>exceeeed</title>
+    <link rel="stylesheet" href="bootstrap-3.3.5-dist/css/bootstrap.css">
+    <style>
+        #left{
+            /*color: aqua;
+            font-size: 64pt;
+            font-family: "Chalkboard", "Tahoma";
+            background-color: brown;
+            background: url( wallpaper/icelands_ring_road-2880x1800.jpg);*/
+            /*ใส่background*/
+            /*background-size: 100% 100%;*/
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-4" id ="left">
+
+            <div class="btn btn-primary" id="left">Stop refeashing</div>
+            
+            <input type="text" class="form-control" placeholder="Enter Data" id="data">
+            
+            <button type="button" class="btn btn-success" id="summit">Summit</button>
+        </div>
+        <div class="col-xs-8">
+            Right
+            <div id="hello" class="a">Hello, exceed</div>
+            <div class="a">Hello, exceed</div>
+            <div class="a">Hello, exceed</div>
+            <div class="a">Hello, exceed</div>
+            
+        </div>
+    </div>
+         
+</div>
+<script src="jquery-2.1.4.min.js"></script>
+<script>
+    var left = $("#left");
+    var hello = $(".a");/*function class a*/
+    var state = true;
+    var interval =  setInterval(refresh, 1000);/*print from server*/
+    var summit = $("#summit");
+    var field = $("#data");
+    function onLoaded(result){
+        hello.text(result);/*print from server*/
+    }
+    
+    function refresh(){
+        $.get("http://exceed.cupco.de/iot/1/ClickHere",onLoaded)
+    }
+    
+    function onLeftClicked(){
+        /*hello.fadeToggle(100);*/
+        /*hello.animate({
+            "font-size": "32pt"
+        },1000);*/
+        /*ขยายfont*/
+        
+       clearInterval(interval);
+        /*cancle print from server*/
+       
+    }
+    function sendDataToServer(){
+        /*console.log(field.val());*/
+        $.post("http://exceed.cupco.de/iot/1/ClickHere",{data: field.val()});
+    }
+    
+    /*setInterval(onLeftClicked, 1000);*/
+    /*print from server with delay (loop)*/
+
+    left.click(onLeftClicked);
+    summit.click(sendDataToServer);
+</script>
+</body>
+</html>
